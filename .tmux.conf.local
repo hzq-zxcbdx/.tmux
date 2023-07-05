@@ -1,5 +1,5 @@
 # : << EOF
-# https://github.com/gpakosz/.tmux
+# https://github.com/hzq-zxcbdx/.tmux
 # (‑●‑●)> dual licensed under the WTFPL v2 license and the MIT license,
 #         without any warranty.
 #         Copyright 2012— Gregory Pakosz (@gpakosz).
@@ -223,6 +223,7 @@ tmux_conf_theme_right_separator_sub="|"
 #tmux_conf_theme_left_separator_sub='\uE0B1'   #   you only need fonts patched with
 #tmux_conf_theme_right_separator_main='\uE0B2' #   Powerline symbols or the standalone
 #tmux_conf_theme_right_separator_sub='\uE0B3'  #   PowerlineSymbols.otf font, see README.md
+#r} CPU: #{cpu_icon} #{cpu_percentage} | %a %h-%d %H:%M 
 
 # status left/right content:
 #   - separate main sections with "|"
@@ -241,7 +242,7 @@ tmux_conf_theme_right_separator_sub="|"
 #     - #{loadavg}
 #     - #{mouse}
 #     - #{pairing}
-#     - #{prefix}
+ #[fg=green,bg=black]#(tmux-mem-cpu-load --colors --interval 2)#[default]
 #     - #{root}
 #     - #{synchronized}
 #     - #{uptime_y}
@@ -251,17 +252,18 @@ tmux_conf_theme_right_separator_sub="|"
 #     - #{uptime_s}
 #     - #{username}
 #     - #{username_ssh}
-tmux_conf_theme_status_left=" ❐ #S | ↑#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} "
-tmux_conf_theme_status_right=" #{prefix}#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R , %d %b | #{username}#{root} | #{hostname} "
+tmux_conf_theme_status_left="❐ #S "
+tmux_conf_theme_status_right="#{sysstat_cpu} #{sysstat_mem} GPU:#{gpu} #{prefix}#{mouse}#{pairing}#{synchronized} ,%R,%d %b  #{username}#{root} | #{hostname} #S #[fg=green,bg=black]#(tmux-mem-cpu-load --colors --interval 2)#[default]  "
+set -g @sysstat_mem_view_tmpl '#{mem.used}'
 
 # status left style
-tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_6,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_8"
-tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_9,$tmux_conf_theme_colour_10,$tmux_conf_theme_colour_11"
+tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_6,$tmux_conf_theme_colour_6,$tmux_conf_theme_colour_7"
+tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_8"
 tmux_conf_theme_status_left_attr="bold,none,none"
 
 # status right style
-tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_12,$tmux_conf_theme_colour_13,$tmux_conf_theme_colour_14"
-tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_17"
+tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_12,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_7"
+tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_8,$tmux_conf_theme_colour_8,$tmux_conf_theme_colour_8"
 tmux_conf_theme_status_right_attr="none,none,bold"
 
 # pairing indicator
@@ -361,7 +363,7 @@ tmux_conf_copy_to_os_clipboard=false
 # force Vi mode
 #   really you should export VISUAL or EDITOR environment variable, see manual
 #set -g status-keys vi
-#set -g mode-keys vi
+set -g mode-keys vi
 
 # replace C-b by C-a instead of using both prefixes
 # set -gu prefix2
@@ -389,12 +391,12 @@ tmux_conf_copy_to_os_clipboard=false
 # by default, launching tmux will update tpm and all plugins
 #   - true (default)
 #   - false
-tmux_conf_update_plugins_on_launch=true
+tmux_conf_update_plugins_on_launch=false
 
 # by default, reloading the configuration will update tpm and all plugins
 #   - true (default)
 #   - false
-tmux_conf_update_plugins_on_reload=true
+tmux_conf_update_plugins_on_reload=false
 
 # by default, reloading the configuration will uninstall tpm and plugins when no
 # plugins are enabled
@@ -412,12 +414,16 @@ tmux_conf_uninstall_plugins_on_reload=true
 
 # to enable a plugin, use the 'set -g @plugin' syntax:
 # visit https://github.com/tmux-plugins for available plugins
-#set -g @plugin 'tmux-plugins/tmux-copycat'
-#set -g @plugin 'tmux-plugins/tmux-cpu'
+set -g @plugin 'tmux-plugins/tmux-copycat'
+set -g @plugin 'tmux-plugins/tmux-cpu'
 #set -g @plugin 'tmux-plugins/tmux-resurrect'
 #set -g @plugin 'tmux-plugins/tmux-continuum'
 #set -g @continuum-restore 'on'
-
+set -g @plugin 'samoshkin/tmux-plugin-sysstat'
+#set -g @plugin 'thewtex/tmux-mem-cpu-load'
+set -g @plugin 'tmux-plugins/tmux-sidebar'
+set -g @plugin 'tmux-plugins/tmux-open'
+set -g @plugin 'danijoo/tmux-plugin-simple-gpu'
 
 # -- custom variables ----------------------------------------------------------
 
@@ -444,4 +450,3 @@ tmux_conf_uninstall_plugins_on_reload=true
 # }
 #
 # "$@"
-# # /!\ do not remove the previous line
