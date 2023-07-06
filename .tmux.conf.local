@@ -253,7 +253,7 @@ tmux_conf_theme_right_separator_sub="|"
 #     - #{username}
 #     - #{username_ssh}
 tmux_conf_theme_status_left="❐ #S "
-tmux_conf_theme_status_right="#{sysstat_cpu} #{sysstat_mem} GPU:#{gpu} #{prefix}#{mouse}#{pairing}#{synchronized} ,%R,%d %b  #{username}#{root} | #{hostname} #S #[fg=green,bg=black]#(tmux-mem-cpu-load --colors --interval 2)#[default]  "
+tmux_conf_theme_status_right="#{sysstat_cpu} #{sysstat_mem} GPU:#{gpu} #{network_bandwidth} #{prefix}#{mouse}#{pairing}#{synchronized},%R,%d %b  #{username}#{root} | #{hostname} #S #[fg=green,bg=black]#(tmux-mem-cpu-load --colors --interval 2)#[default]  "
 set -g @sysstat_mem_view_tmpl '#{mem.used}'
 
 # status left style
@@ -424,6 +424,8 @@ set -g @plugin 'samoshkin/tmux-plugin-sysstat'
 set -g @plugin 'tmux-plugins/tmux-sidebar'
 set -g @plugin 'tmux-plugins/tmux-open'
 set -g @plugin 'danijoo/tmux-plugin-simple-gpu'
+set -g @plugin 'xamut/tmux-network-bandwidth'
+
 
 # -- custom variables ----------------------------------------------------------
 
